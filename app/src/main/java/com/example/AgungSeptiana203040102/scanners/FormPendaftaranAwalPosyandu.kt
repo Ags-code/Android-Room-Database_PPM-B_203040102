@@ -21,6 +21,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.benasher44.uuid.uuid4
 import com.example.AgungSeptiana203040102.model.PendaftaranAwal
 import com.example.AgungSeptiana203040102.persistences.PendaftaranAwalDao
@@ -29,7 +30,8 @@ import com.example.AgungSeptiana203040102.ui.theme.Teal200
 import kotlinx.coroutines.launch
 
 @Composable
-fun FormPendaftaranAwalPosyandu(pendaftaranAwalDao: PendaftaranAwalDao) {
+fun FormPendaftaranAwalPosyandu() {
+    val viewModel = hiltViewModel<PengelolaanPendaftaranViewModel>()
     val scope = rememberCoroutineScope()
     val nik = remember{mutableStateOf(TextFieldValue(""))}
     val nama = remember { mutableStateOf(TextFieldValue("")) }
@@ -103,14 +105,15 @@ fun FormPendaftaranAwalPosyandu(pendaftaranAwalDao: PendaftaranAwalDao) {
             .fillMaxWidth()) {
             Button(modifier = Modifier.weight(5f), onClick = {
                 val id = uuid4().toString()
-                val item = PendaftaranAwal(id, nik.value.text, nama.value.text, tempatLahir.value.text, tglLahir.value.text, alamat.value.text, noHp.value.text)
-                scope.launch { pendaftaranAwalDao.insertAll(item) }
-                nik.value = TextFieldValue("")
-                nama.value = TextFieldValue("")
-                tempatLahir.value = TextFieldValue("")
-                tglLahir.value = TextFieldValue("")
-                alamat.value = TextFieldValue("")
-                noHp.value = TextFieldValue("")
+                scope.launch {
+                    viewModel.insert(id, nik.value.text, nama.value.text, tempatLahir.value.text, tglLahir.value.text, alamat.value.text, noHp.value.text)
+                    nik.value = TextFieldValue("")
+                    nama.value = TextFieldValue("")
+                    tempatLahir.value = TextFieldValue("")
+                    tglLahir.value = TextFieldValue("")
+                    alamat.value = TextFieldValue("")
+                    noHp.value = TextFieldValue("")
+                }
             },
             colors = loginButtonColors) {
                 Text(text = "Simpan", style = TextStyle(color = Color.White, fontSize = 18.sp), modifier = Modifier.padding(8.dp))

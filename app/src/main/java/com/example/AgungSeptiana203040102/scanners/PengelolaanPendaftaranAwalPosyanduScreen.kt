@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.LiveData
 import androidx.room.Room
 import com.example.AgungSeptiana203040102.model.PendaftaranAwal
@@ -27,16 +28,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
 fun PengelolaanPendaftaranAwalPosyandu() {
-    val context = LocalContext.current
-    val db = Room.databaseBuilder(
-        context,
-        AppDatabase::class.java, "pengelolaan-pendaftaran awal posyandu"
-    ).build()
-    val pendaftaranAwalDao = db.pendaftaranAwalDao()
-    val list : LiveData<List<PendaftaranAwal>> = pendaftaranAwalDao.loadAll()
-    val items: List<PendaftaranAwal> by list.observeAsState(initial = listOf())
+    val viewModel = hiltViewModel<PengelolaanPendaftaranViewModel>()
+    val items: List<PendaftaranAwal> by viewModel.list.observeAsState(initial = listOf())
     Column(modifier = Modifier.fillMaxWidth()) {
-        FormPendaftaranAwalPosyandu (pendaftaranAwalDao)
+        FormPendaftaranAwalPosyandu ()
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
             items(items = items, itemContent = { item ->
                 Row(modifier = Modifier

@@ -12,7 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.AgungSeptiana203040102.scanners.PengelolaanPendaftaranAwalPosyandu
 import com.example.AgungSeptiana203040102.ui.theme.AgungSeptiana203040102Theme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
